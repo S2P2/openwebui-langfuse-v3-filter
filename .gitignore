@@ -1,0 +1,17 @@
+# Secrets / local config
+.env
+*.env
+valves.json
+**/valves.json
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+.venv/
+venv/
+
+# OS/editor
+.DS_Store
+.vscode/
+.idea/

@@ -1,0 +1,44 @@
+--- open-webui-upstream/langfuse_v3_filter_pipeline.py
++++ working/langfuse_v3_filter_pipeline.py
+@@ -315,7 +315,11 @@
+ 
+         usage = None
+         if assistant_message_obj:
+-            info = assistant_message_obj.get("usage", {})
++            # Langfuse v3 wraps usage inside info.usage; fall back to top-level for compatibility
++            if "info" in assistant_message_obj and isinstance(assistant_message_obj["info"], dict):
++                info = assistant_message_obj["info"].get("usage", {})
++            else:
++                info = assistant_message_obj.get("usage", {})
+             if isinstance(info, dict):
+                 input_tokens = info.get("prompt_eval_count") or info.get("prompt_tokens")
+                 output_tokens = info.get("eval_count") or info.get("completion_tokens")
+@@ -378,17 +382,23 @@
+                 "generation_id": str(uuid.uuid4()),
+             }
+             
++            # Build usage_details dict for start_generation (required for LangFuse v3)
++            usage_details = {}
++            if usage:
++                usage_details = {
++                    'input_tokens': usage.get('input', 0),
++                    'output_tokens': usage.get('output', 0),
++                    'total_tokens': usage.get('input', 0) + usage.get('output', 0),
++                }
++
+             generation = trace.start_generation(
+                 name=f"llm_response:{str(uuid.uuid4())}",
+                 model=model_value,
+                 input=body["messages"],
+                 output=assistant_message,
+                 metadata=generation_metadata,
+-            )
+-
+-            # Update with usage if available
+-            if usage:
+-                generation.update(usage=usage)
++                usage_details=usage_details if usage_details else None,
++            )
+ 
+             generation.end()
+             self.log(f"LLM generation completed for chat_id: {chat_id}")
