@@ -1,5 +1,16 @@
 --- open-webui-upstream/langfuse_v3_filter_pipeline.py
 +++ working/langfuse_v3_filter_pipeline.py
+@@ -1,8 +1,8 @@
+ """
+ title: Langfuse Filter Pipeline for v3
+ author: open-webui
+-date: 2025-07-31
+-version: 0.0.1
++date: 2026-07-01
++version: 0.1.0
+ license: MIT
+ description: A filter pipeline that uses Langfuse v3.
+ requirements: langfuse>=3.0.0
 @@ -315,7 +315,11 @@
  
          usage = None

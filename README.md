@@ -93,6 +93,13 @@ Common endpoint URLs:
 - Same Docker Compose network: `http://pipelines:9099`
 - Separate container via host port: `http://host.docker.internal:9099` or `http://<server-ip>:9099`
 
+## Version history
+
+### 0.1.0
+
+- Fix token usage extraction from Open WebUI `info.usage`.
+- Send Langfuse v3 token usage via `usage_details`.
+
 ## Notes
 
 - Keep Langfuse keys in valves/UI/env only.
