@@ -41,6 +41,47 @@ This version keeps the upstream pipeline structure, with two fixes for the worki
 
 See `patches/open-webui-upstream.diff` for the exact diff.
 
+## Run a Pipelines container
+
+If you do not already have an Open WebUI Pipelines container, start one first.
+
+### Docker run
+
+```bash
+docker run -d \
+  --name pipelines \
+  --restart always \
+  -p 9099:9099 \
+  --add-host=host.docker.internal:host-gateway \
+  -v pipelines:/app/pipelines \
+  ghcr.io/open-webui/pipelines:main
+```
+
+### Docker Compose
+
+```yaml
+services:
+  pipelines:
+    image: ghcr.io/open-webui/pipelines:main
+    container_name: pipelines
+    restart: always
+    ports:
+      - "9099:9099"
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+    volumes:
+      - pipelines:/app/pipelines
+
+volumes:
+  pipelines:
+```
+
+Start it with:
+
+```bash
+docker compose up -d pipelines
+```
+
 ## Install into a Pipelines container
 
 Copy the filter into the persistent Pipelines volume/container:
